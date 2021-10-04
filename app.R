@@ -10,6 +10,8 @@ data = data %>%
            data_empenho = as.Date(data_empenho, format = "%d/%m/%Y"),
            ano = format(data, "%Y"))
 
+categorias = levels(factor(data$funcao))
+
 glimpse(data)
 ui <- fluidPage(
     theme = shinytheme("cerulean"),
@@ -35,7 +37,7 @@ ui <- fluidPage(
                         ),
                 ),
                 
-                tags$div(
+                div(
                     tags$h3('Como interagir com os gráficos?'),
                     tags$p('Cada gráfico dispõe de seletores no lado esquerdo onde você pode selecionar o ano ou categoria de interesse e, ao selecionar um valor, o gráfico exibe os dados',
                            br(),
@@ -73,19 +75,144 @@ ui <- fluidPage(
                         a(href = "http://ideb.inep.gov.br/resultado/", 'resultados IDEB'),
                         '. '
                     ),
+                    p(
+                        'Dentre as categorias que menos recebem investimento ao longo dos anos temos, Cultura, Transporte, e Desporte e Lazer.'
+                    ),
                     br(),
                     div(
                         class="graph_and_selector_display",
                         tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 5px; }"),
-                        numericInput(inputId = "year",
-                                     label = "Selecione o ano",
-                                     value = 2021, min = 2013, max = 2021),
                         tags$div(
                             class="graph",
                             plotlyOutput(outputId = "bar_year_category"),
-                            tags$style(".graph { margin-left: 25px; }")
+                            tags$style(".graph { margin-right: 35px; }")
+                        ),
+                        numericInput(inputId = "year",
+                                     label = "Selecione o ano",
+                                     value = 2021, min = 2013, max = 2021)
+                    ),
+                    
+                    br(),
+                    
+                    p(
+                        'Abaixo, temos uma visualização que nos permite comparar o valor gasto por área ao longo dos anos. O tamanho de cada ponto é proporcional ao valor total gastor naquele ano',
+                        br(),
+                        'para aquela área. Para ver o valor exato do gasto, passe o mouse sobre o ponto de interesse. Você também pode selecionar as áreas que você deseja visualizar no gráfico, basta',
+                        br(),
+                        'selecionar os valores que você deseja remover da visualização na coluna da legenda no lado direito do gráfico.',
+                        br()
+                    ),
+                    p(
+                        'Podemos confirmar com a visualização abaixo que de fato a área da educação é uma das que mais recebe verba municipal. Em 2017 o valor destinado à educação chegou aos',
+                        br(),
+                        'R$ 57.36 milhões. Porém existem anos como 2013, 2016, e 2019 onde o valor destinado foi menor que R$7 milhões, valor bem inferior comparado aos outros anos.',
+                    ),
+                    br(),
+                    div(
+                        class="graph_and_selector_display",
+                        tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 5px; }"),
+                        tags$div(
+                            plotlyOutput(outputId = "year_by_year_category")
                         )
-                    ),   
+                    ),
+                    br()
+                ),
+                
+                div(
+                    h3('Como se comporta a distribuição dos gastos por categoria ao longo dos anos?'),
+                    
+                    p(
+                        'Para essa análise, vamos observar três tipos de visualizações diferentes, boxplots, gráfico de dispersão, e o gráfico de densidade. Vamos segmentar cada visualização por',
+                        br(),
+                        'ano e por categoria. Ao selecionar o ano e categoria correspondente, os três gráficos exibirão os valores para os filtros determinados.'
+                    ),
+                    
+                    br(),
+                    
+                    h4('Boxplot'),
+                    
+                    p(
+                        'De maneira concisa, um boxplot nos fornece uma visualização de algumas medidas de sumário importantes e robustas, sendo elas a mediana, o 25º percentil (q1), o 75º percentil (q3)',
+                        br(),
+                        'mínimos e máximos, e valores extremos. A mediana é uma medida de centro, e indica que metade dos valores são menores que o valor da mediana; o 25º percentil é o valor para',
+                        br(),
+                        'o qual 25% dos valores presentes nos dados são menores que o valor do percentil; o 75º percentil, análogamente, é o valor para o qual 75% dos valores na base de dados é menor.',
+                    ),
+                    
+                    p(
+                        'No boxplot abaixo, os pontos que estão em vermelho são possíveis outliers (valores extremos que não se parecem com a distribuição a qual pertencem). Se você passar o mouse',
+                        br(),
+                        'sobre o ponto poderá ter informações mais detalhadas sobre ele, como favorecido, data, e o valor exato. Se essas informações não forem o suficiente, você pode visitar o ',
+                        br(),
+                        a(href = "https://santacruzdocapibaribe.pe.tenosoftsistemas.com.br/portal/v81/p_index_entidades/?municipio=47&represent=1", 'portal da transparência de Sta. Cruz do Capibaribe'),
+                        'navegar em "prefeitura / fms / fmas" > "Despesa" > "despesa detalhada diária", e pesquisar na aba de pagamentos pelo favorecido',
+                        br(),
+                        'em questão. Se você não quiser ver os pontos que extrapolam o limite máximo do boxplot, selecione a opção "Exibir valores extremos" à direita do gráfico.'
+                    ),
+                    
+                    p(
+                        'Para o ano de 2021 e categoria Administração, pelo gráfico abaixo, temos que a mediana do valor dos pagamentos é de R$1.280,50, o Q1 (ou 25º percentil) é de R$195,91, e',
+                        br(),
+                        'o Q3 (75º percentil) é R$5.700,00, ou seja, 75% dos pagamentos realizados para essa categoria no ano de 2021 é menor ou igual a R$5.700,00. O maior valor extremo',
+                        br(),
+                        'foi de um pagamento que tem como favorecido a CELPE - Companhia Energética de Pernambuco, no valor de R$315.336,40. Um possível outlier é um pagamento realizado',
+                        br(),
+                        'à Tributus Informática LTDA, no valor de R$16.695,00.'
+                    ),
+                    
+                    div(
+                        class="graph_and_selector_display",
+                        tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 30px; }"),
+                        div(
+                            id = "boxplot_graph",
+                            tags$style('#boxplot_graph { margin-right: 30px; }'),
+                            plotlyOutput(outputId = "boxplot")
+                        ),
+                        div(
+                            checkboxInput(inputId = "extremes", "Exibir valores extremos", value = TRUE),
+                            numericInput(inputId = "year_boxplot",
+                                         label = "Selecione o ano",
+                                         value = 2021, min = 2013, max = 2021),
+                            selectInput(inputId = "category_boxplot", "Seleciona a área da despesa:", 
+                                        choices = categorias)
+                        )
+                    )
+                ),
+                
+                div(
+                    h4('Gráfico de Densidade'),
+                    
+                    div(
+                        class="graph_and_selector_display",
+                        tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 5px; }"),
+                        tags$div(
+                            plotlyOutput(outputId = "distribution")
+                        )
+                    )
+                ),
+                
+                div(
+                    h4('Dispersão'),
+                    
+                    div(
+                        class="graph_and_selector_display",
+                        tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 5px; }"),
+                        tags$div(
+                            plotlyOutput(outputId = "scatter_boxplot")
+                        )
+                    )
+                ),
+                
+                div(
+                    h4('Scatter'),
+                    
+                    div(
+                        class="graph_and_selector_display",
+                        tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 5px; }"),
+                        tags$div(
+                            plotlyOutput(outputId = "cnpj_max")
+                        )
+                    )
                 )
             )
         )
@@ -102,15 +229,113 @@ server <- function(input, output) {
                 x = ~soma_pagamento,
                 y = ~reorder(funcao, soma_pagamento),
                 type = "bar",
-                marker = list(hoverFormat="%.2")
+                text = ~paste('R$: ', round(soma_pagamento / 1e6, 2), 'M')
             ) %>% 
             layout(
                 title = "Pagamentos Classificados por Categoria e Ano",
                 yaxis = list(title = ''),
-                xaxis = list(title = "Valor em R$")
+                xaxis = list(title = "Valor em milhões de R$")
             )
         
         
+    })
+    
+    output$year_by_year_category <- renderPlotly({
+        payments_by_year_and <- data %>% 
+            group_by(ano, funcao) %>% 
+            summarise(soma_pagamento = sum(valor), .groups = 'drop') %>% 
+            plot_ly(
+                x = ~ano,
+                y = ~funcao,
+                type = "scatter",
+                mode = "markers",
+                color = ~funcao,
+                sizes = c(10, 50),
+                size = ~soma_pagamento,
+                marker = list(opacity = .5, sizemode='diameter'),
+                text = ~paste('R$: ', round(soma_pagamento / 1e6, 2), 'M')
+            ) %>% 
+            layout(
+                title = 'Total Gasto por Categoria ao Longo dos Anos',
+                yaxis = list(title = ''),
+                xaxis = list(title = 'Ano')
+            )
+    })
+    
+    output$boxplot <- renderPlotly({
+        boxplot_by_category <- data %>% 
+            group_by(funcao, ano) %>% 
+            filter(funcao == input$category_boxplot, ano == input$year_boxplot) %>% 
+            plot_ly(
+                y = ~valor,
+                boxpoints = "suspectedoutliers"
+            ) %>% 
+            add_boxplot(
+                x = ~ano,
+                marker = list(outliercolor = 'rgba(219, 64, 82, 0.6)'),
+                jitter = 0.3,
+                alpha = .4,
+                text = ~paste(favorecido),
+                boxpoints = input$extremes
+            ) %>% 
+            layout(
+                title = 'Boxplot - Pagamentos por Área e Ano',
+                xaxis = list(title = 'Ano'),
+                yaxis = list(title = 'Valor em R$')
+            )
+    })
+    
+    output$scatter_boxplot <- renderPlotly({
+        scatter_box <- data %>% 
+            group_by(funcao, ano) %>% 
+            filter(funcao == input$category_boxplot, ano == input$year_boxplot) %>% 
+            plot_ly(
+                x = ~data,
+                y = ~valor,
+                type = 'scatter',
+                text = ~paste(favorecido),
+                alpha = .4
+            ) %>% 
+            layout(
+                title = 'Dispersão dos Pagamentos por Ano e Categoria',
+                xaxis = list(title = ''),
+                yaxis = list(title = 'Valor em R$')
+            )
+    })
+    
+    output$distribution <- renderPlotly({
+        filtered_data = data %>% 
+            filter(ano == input$year_boxplot, funcao == input$category_boxplot)
+        
+        density <- density(filtered_data$valor)
+        
+        distribution <- plot_ly(
+            x = ~density$x,
+            y = ~density$y,
+            type = 'scatter',
+            mode = 'lines',
+            fill = 'tozeroy'
+        ) %>% 
+        layout(
+            title = "Gráfico de Densidade - Pagamentos por Ano e Categoria",
+            xaxis = list(title = 'Valor em R$'),
+            yaxis = list(title = '')
+        )
+    })
+    
+    output$cnpj_max <- renderPlotly({
+        scatter_cnpj <- data %>% 
+            filter(tipo_1 == "Pessoa Jurídica") %>% 
+            group_by(favorecido, ano) %>% 
+            summarise(total_pago = sum(valor), .groups = 'drop') %>% 
+            filter(ano == 2021) %>% 
+            arrange(desc(total_pago)) %>% 
+            slice(1:10) %>% 
+            plot_ly(
+                x = ~total_pago,
+                y = ~favorecido,
+                type = 'scatter'
+            )
     })
 }
 
