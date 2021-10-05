@@ -23,17 +23,17 @@ ui <- fluidPage(
                 class = "main_div",
                 tags$style(".main_div { display: flex; flex-direction: column; width: 100%; }"),
                 
-                tags$div(
-                    tags$h2('Análise dos Pagamentos Realizados pela Prefeitura de Santa Cruz do Capibaribe'),
-                    tags$p(
+                div(
+                    h2('Análise dos Pagamentos Realizados pela Prefeitura de Santa Cruz do Capibaribe'),
+                    p(
                         'Essa página tem como objetivo empoderar o cidadão santa cruzense fornecendo meios para a análise dos gastos da prefeitura. Para isso, fornecemos visualizações interativas',
-                        tags$br(),
+                        br(),
                         'e comentadas dos pagamentos realizados. As informações usadas aqui são provenientes do portal da transparência do município, que datam desde o ano de 2013, e foram coletadas',
-                        tags$br(),
-                        'até o dia 28/09/2021. Além dos pagamentos, os dados também incluem informações detalhadas do empenho relativo a cada pagamento, e a base de dados completa está acessível',
-                        tags$br(),
+                        br(),
+                        'até o dia 31/08/2021. Além dos pagamentos, os dados também incluem informações detalhadas do empenho relativo a cada pagamento, e a base de dados completa está acessível',
+                        br(),
                         'em ',
-                        tags$a(href = 'https://github.com/clarammdantas/tcc-scraper', 'tcc-scraper'), '.'
+                        a(href = 'https://github.com/clarammdantas/tcc-scraper', 'tcc-scraper'), '.'
                         ),
                 ),
                 
@@ -41,7 +41,7 @@ ui <- fluidPage(
                     tags$h3('Como interagir com os gráficos?'),
                     tags$p('Cada gráfico dispõe de seletores no lado esquerdo onde você pode selecionar o ano ou categoria de interesse e, ao selecionar um valor, o gráfico exibe os dados',
                            br(),
-                           'correspondentes aos filtros aplicados. Cada seção possui um texto explicativo de como ler e interpretar cada tipo de gráfico, e no lado superior direito abaixo',
+                           'correspondentes aos filtros aplicados. Cada seção possui um texto explicando como ler e interpretar cada tipo de gráfico, e no lado superior direito, abaixo',
                            br(),
                            'do título, existem opções mais avançadas de interação, dentre elas o download do gráfico (primeiro ícone, uma câmera), e zoom (ícone de lupa). Se após aplicar um',
                            br(),
@@ -57,7 +57,7 @@ ui <- fluidPage(
                 div(
                     h3('Quanto foi gasto por categoria em cada ano?'),
                     p(
-                        'A seguir temos um gráfico de barras que mostra o total gasto em um ano em cada categoria cadastrada. Para visualizar o valor exato gasto em uma categoria, basta passar',
+                        'A seguir temos um gráfico de barras que mostra o total gasto em um ano para cada categoria cadastrada. Para visualizar o valor exato gasto em uma categoria, basta passar',
                         br(),
                         'mouse sobre a barra de interesse. Outro ponto a ressaltar é que nesse gráfico alguns dos valores para o ano de 2021 parecem ser zero, como é o caso das categorias',
                         br(),
@@ -97,7 +97,7 @@ ui <- fluidPage(
                     p(
                         'Abaixo, temos uma visualização que nos permite comparar o valor gasto por área ao longo dos anos. O tamanho de cada ponto é proporcional ao valor total gastor naquele ano',
                         br(),
-                        'para aquela área. Para ver o valor exato do gasto, passe o mouse sobre o ponto de interesse. Você também pode selecionar as áreas que você deseja visualizar no gráfico, basta',
+                        'para aquela área. Para ver o valor exato do gasto, passe o mouse sobre o ponto de interesse. Você também pode selecionar as categorias que você deseja visualizar no gráfico, basta',
                         br(),
                         'selecionar os valores que você deseja remover da visualização na coluna da legenda no lado direito do gráfico.',
                         br()
@@ -140,14 +140,14 @@ ui <- fluidPage(
                     ),
                     
                     p(
-                        'No boxplot abaixo, os pontos que estão em vermelho são possíveis outliers (valores extremos que não se parecem com a distribuição a qual pertencem). Se você passar o mouse',
+                        'No boxplot abaixo, os pontos que estão em vermelho são possíveis outliers (valores extremos que não se parecem com a distribuição dos outros pontos). Se você passar o mouse',
                         br(),
                         'sobre o ponto poderá ter informações mais detalhadas sobre ele, como favorecido, data, e o valor exato. Se essas informações não forem o suficiente, você pode visitar o ',
                         br(),
                         a(href = "https://santacruzdocapibaribe.pe.tenosoftsistemas.com.br/portal/v81/p_index_entidades/?municipio=47&represent=1", 'portal da transparência de Sta. Cruz do Capibaribe'),
-                        'navegar em "prefeitura / fms / fmas" > "Despesa" > "despesa detalhada diária", e pesquisar na aba de pagamentos pelo favorecido',
+                        'navegar em "Prefeitura / FMS / FMAS" > "Despesa" > "Despesa Detalhada Diária", e pesquisar na aba de pagamentos pelo favorecido',
                         br(),
-                        'em questão. Se você não quiser ver os pontos que extrapolam o limite máximo do boxplot, selecione a opção "Exibir valores extremos" à direita do gráfico.'
+                        'em questão. Se você não quiser ver os pontos que extrapolam o limite máximo do boxplot, desmarque a opção "Exibir valores extremos" à direita do gráfico.'
                     ),
                     
                     p(
@@ -182,6 +182,14 @@ ui <- fluidPage(
                 div(
                     h4('Gráfico de Densidade'),
                     
+                    p(
+                        'O gráfico de densidade nos informa a probabilidade de ocorrência de um certo valor e nos permite visualizar a distribuição de uma variável numérica que nesse caso são',
+                        br(),
+                        'os valores dos pagamentos realizados pela prefeitura. E como podemos observar, para a maioria dos anos a distribuição é enviesada à esquerda e possui uma cauda longa',
+                        br(),
+                        'à direita, ou seja, encontramos valores bem extremos, confirmando o que visualizamos no gráfico acima de boxplot.'
+                    ),
+                    
                     div(
                         class="graph_and_selector_display",
                         tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 5px; }"),
@@ -194,6 +202,16 @@ ui <- fluidPage(
                 div(
                     h4('Dispersão'),
                     
+                    p(
+                        'Por fim, o gráfico de dispersão nos fornece uma visão mais granular dos pagamentos ao longo do ano. Aqui você pode investigar melhor quais pagamentos foram realizados',
+                        br(),
+                        'ao longo de um mês por exemplo, ou ter uma visão maior dos possíveis outliers em contraste aos outros pontos. Podemos observar o valor mais extremo desse ano de 2021',
+                        br(),
+                        'que foi o pagamento realizado à CELPE e notar que ele diverge em mais de R$150.000,00 dos outros pagamentos realizados no ano. Podemos ver também que no mês de Agosto,',
+                        br(),
+                        'a prefeitura realizou pagamentos à empresas de tecnologia e artigos tecnológicos somando um valor total de R$22.871,50.'
+                    ),
+                    
                     div(
                         class="graph_and_selector_display",
                         tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 5px; }"),
@@ -204,13 +222,37 @@ ui <- fluidPage(
                 ),
                 
                 div(
-                    h4('Scatter'),
+                    h3('Quais CNPJs mais receberam por ano?'),
+                    
+                    p(
+                        'Aqui é mostrado os 10 maiores gastos com pessoas jurídicas por ano. Foi realizada a soma de todos os valores dos pagamentos realizados por CNPJ durante determinado ano.',
+                        br(),
+                        'É importante citar que para o CNPJ 11.196.515/0001-25 houve uma mudança no portal da transparência no nome do favorecido após a data de 31/08/2021 (data da última atualização',
+                        br(),
+                        'desses dados usados para estas análises). O nome do favorecido que constava até a data da nossa coleta de dados era FMSSCC PROG COMBATE COVID 19 - EFETIVOS, onde FMSSCC',
+                        br(),
+                        'significa Fundo Municipal de Saude de Santa Cruz do Capibaribe, e agora consta no portal da transparencia como FMSSCC SAD CONTRATADOS - PROCESSO SELETIVO, porém com mesmo',
+                        br(),
+                        'CNPJ.',
+                    ),
+                    
+                    p(
+                        'Dentre os fatos que chamam atenção, temos que o maior gasto de 2019 foi com o Gabinete do Vice Prefeito - Eletivo, correspondendo a um total de R$9.57 milhões. Esse valor é,',
+                        br(),
+                        'aproximadamente, 2.8 vezes maior que o valor gasto com a construtora Vialim que recebeu R$2.3 milhões da prefeitura no ano de 2019.'
+                    ),
                     
                     div(
-                        class="graph_and_selector_display",
-                        tags$style(".graph_and_selector_display { display: flex; flex-direction: row; gap: 5px; }"),
-                        tags$div(
+                        class="cnpj_maiores",
+                        div(
+                            id = "cnpj_max_graph",
+                            tags$style('#cnpj_max_graph { margin-right: 30px; }'),
                             plotlyOutput(outputId = "cnpj_max")
+                        ),
+                        div(
+                            numericInput(inputId = "year_max_cnpj",
+                                         label = "Selecione o ano",
+                                         value = 2021, min = 2013, max = 2021)
                         )
                     )
                 )
@@ -326,15 +368,22 @@ server <- function(input, output) {
     output$cnpj_max <- renderPlotly({
         scatter_cnpj <- data %>% 
             filter(tipo_1 == "Pessoa Jurídica") %>% 
-            group_by(favorecido, ano) %>% 
+            group_by(favorecido, ano, cpf_cnpj) %>% 
             summarise(total_pago = sum(valor), .groups = 'drop') %>% 
-            filter(ano == 2021) %>% 
+            filter(ano == input$year_max_cnpj) %>% 
             arrange(desc(total_pago)) %>% 
             slice(1:10) %>% 
             plot_ly(
                 x = ~total_pago,
-                y = ~favorecido,
-                type = 'scatter'
+                y = ~reorder(favorecido, total_pago),
+                type = 'scatter',
+                color = 'coral',
+                text = ~paste('R$: ', round(total_pago / 1e6, 2), 'M\n', 'CNPJ: ', cpf_cnpj)
+            ) %>% 
+            layout(
+                title = 'As 10 Pessoas Jurídicas que Mais Receberam no Ano',
+                xaxis = list(title = 'Valor total pago R$'),
+                yaxis = list(title = '')
             )
     })
 }
