@@ -1,0 +1,11 @@
+name: monitora-scc
+title:
+username:
+account: clara-moraes-dantas
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4825118
+bundleId: 5116461
+url: https://clara-moraes-dantas.shinyapps.io/monitora-scc/
+when: 1633652820.68069
+lastSyncTime: 1633652820.68072

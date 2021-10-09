@@ -229,7 +229,7 @@ ui <- fluidPage(
                         br(),
                         'É importante citar que para o CNPJ 11.196.515/0001-25 houve uma mudança no portal da transparência no nome do favorecido após a data de 31/08/2021 (data da última atualização',
                         br(),
-                        'desses dados usados para estas análises). O nome do favorecido que constava até a data da nossa coleta de dados era FMSSCC PROG COMBATE COVID 19 - EFETIVOS, onde FMSSCC',
+                        'dos dados usados para esta análise). O nome do favorecido que constava até a data da nossa coleta de dados era FMSSCC PROG COMBATE COVID 19 - EFETIVOS, onde FMSSCC',
                         br(),
                         'significa Fundo Municipal de Saude de Santa Cruz do Capibaribe, e agora consta no portal da transparencia como FMSSCC SAD CONTRATADOS - PROCESSO SELETIVO, porém com mesmo',
                         br(),
@@ -239,22 +239,32 @@ ui <- fluidPage(
                     p(
                         'Dentre os fatos que chamam atenção, temos que o maior gasto de 2019 foi com o Gabinete do Vice Prefeito - Eletivo, correspondendo a um total de R$9.57 milhões. Esse valor é,',
                         br(),
-                        'aproximadamente, 2.8 vezes maior que o valor gasto com a construtora Vialim que recebeu R$2.3 milhões da prefeitura no ano de 2019.'
+                        'aproximadamente, 2.8 vezes maior que o valor gasto com a construtora Vialim que recebeu R$2.3 milhões da prefeitura no ano de 2019. Outro ponto interessante é que os gastos com',
+                        br(),
+                        'gasolina estão entre os maiores gastos na maioria dos anos, e o posto de combustível que mais receu nos últimos anos da prefeitura foi o Posto de Combustível Batista e Ferreira LTDA',
+                        br(),
+                        'tendo recebido, no ano de 2021, um total de R$1.15M. Porém esse valor não representa o valor total gasto em combustível, uma vez que é apenas o valor pago a apenas um fornecedor e,',
+                        br(),
+                        'portanto, para sabermos o valor total gasto com combustível, temos que somar o valor paga à outros postos.'
                     ),
+                    br(),
                     
                     div(
                         class="cnpj_maiores",
+                        tags$style('.cnpj_maiores { width: 100%; display: flex; flex-direction: row; }'),
                         div(
                             id = "cnpj_max_graph",
-                            tags$style('#cnpj_max_graph { margin-right: 30px; }'),
+                            tags$style('#cnpj_max_graph { margin-right: 30px; width: 65% }'),
                             plotlyOutput(outputId = "cnpj_max")
                         ),
+                        
                         div(
                             numericInput(inputId = "year_max_cnpj",
                                          label = "Selecione o ano",
                                          value = 2021, min = 2013, max = 2021)
                         )
-                    )
+                    ),
+                    br()
                 )
             )
         )
